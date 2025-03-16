@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Web Technologies</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="icon" type="image/ico" href="logo.png">
+    <style>
+        .outer {
+            display: flex;
+            justify-content: center;
+            height: 200px;
+        }
+
+        .inner1 {
+            height: 600px;
+            width: 250px;
+        }
+
+        .inner2 {
+            display: flex;
+            height: 600px;
+            width: 250px;
+            background-color: green;
+        }
+
+        .lastinner1 {
+            height: 350px;
+            width: 250px;
+            background-color: blue;
+        }
+
+        .lastinner2 {
+            height: 250px;
+            width: 250px;
+            background-color: pink;
+        }
+    </style>
+</head>
+<body class="bg-gray-100">
+    <!-- Header -->
+    <header class="flex items-center justify-center p-4 bg-white shadow-md">
+        <div class="flex flex-col items-center">
+            <img alt="logo" class="rounded-full" height="60" width="60" 
+                src="logo.png">
+            <h1 class="text-lg font-semibold mt-2">Lab Task 1</h1>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="p-4">
+        <div class="outer">
+            <div class="inner1">
+                <div class="lastinner1"></div>
+                <div class="lastinner2"></div>
+            </div>
+            <div class="inner2"></div>
+        </div>
+    </main>
+</body>
+</html>
