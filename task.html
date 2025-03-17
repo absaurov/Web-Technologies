@@ -29,6 +29,7 @@
             height: 350px;
             width: 250px;
             background-color: blue;
+
         }
 
         .lastinner2 {
@@ -52,7 +53,24 @@
     <main class="p-4">
         <div class="outer">
             <div class="inner1">
-                <div class="lastinner1"></div>
+                <div class="lastinner1">  
+                    <h2>Registration Form</h2> 
+                    <form action="/action_page.php">
+                        <label for="fname">Full Name:</label><br>
+                        <input type="text" id="fname" name="fname" value=""><br>
+                        <label for="mail">Email:</label><br>
+                        <input type="text" id="mail" name="mail" value=""><br>
+                        <label for="pass">Password:</label><br>
+                        <input type="text" id="pass" name="pass" value=""><br>
+                        <label for="repass">Confirm Password:</label><br>
+                        <input type="text" id="repass" name="repass" value=""><br>
+                        <label for="dob">DOB:</label><br>
+                        <input type="text" id="dob" name="dob" value=""><br>
+                        
+                        <input type="submit" value="Submit">
+                      </form> 
+                </div>
+               
                 <div class="lastinner2"></div>
             </div>
             <div class="inner2"></div>
