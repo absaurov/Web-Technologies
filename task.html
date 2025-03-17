@@ -37,6 +37,13 @@
             width: 250px;
             background-color: pink;
         }
+        .terms-container {
+            margin-top: 20px;
+        }
+        body {
+            font-size: small;
+            margin: 20px;
+        }
     </style>
 </head>
 <body class="bg-gray-100">
@@ -225,8 +232,12 @@
                             <option value="Montenegro">Montenegro</option>
                             <option value="Montserrat">Montserrat</option>
                         </select> 
-
-
+                        <form id="termsForm">
+                            <label>
+                                <input type="checkbox" id="termsCheckbox"> 
+                                I agree to the <a href="terms.html" target="_blank">Terms and Conditions</a>
+                            </label>
+                        </form>
                         <input type="submit" value="Submit">
                       </form> 
                 </div>
