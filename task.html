@@ -241,13 +241,26 @@
                         </form>
                         <label for="textbox">Enter text:</label>
                         <input type="text" id="textbox" name="textbox" placeholder="Type something...">
-                        <input type="submit" value="Submit">
                       </form> 
+                      <form action="">
+                        <input type="submit" name="submit" value="submit" onclick="return validate()">
+                    </form>
                 </div>
                 <div class="lastinner2"></div>
             </div>
             <div class="inner2"></div>
         </div>
     </main>
+  
+    <script>
+        function validate() {
+            const checkbox = document.getElementById('termsCheckbox');
+            if (!checkbox.checked) {
+                alert('Please agree to the Terms and Conditions.');
+                return false;
+            }
+            return true;
+        }
+    </script>
 </body>
 </html>
