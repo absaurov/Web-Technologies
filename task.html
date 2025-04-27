@@ -20,110 +20,204 @@
       display: flex;
       height: 600px;
       width: 250px;
-      background-color: green;
+      background-color: #38b2ac; /* Teal */
     }
     .lastinner1 {
       height: 350px;
       width: 250px;
-      background-color: blue;
+      background-color: #4c51bf; /* Indigo */
     }
     .lastinner2 {
       height: 250px;
       width: 250px;
-      background-color: pink;
+      background-color: #667eea; /* Lighter indigo */
     }
     body {
       font-size: small;
       margin: 20px;
-      color: coral;
+      color: #2d3748; /* Gray-800 */
+    }
+    input[type="text"], 
+    input[type="email"], 
+    input[type="password"], 
+    input[type="date"],
+    select {
+      background-color: rgba(255, 255, 255, 0.8);
     }
   </style>
 </head>
 
-<body class="bg-gray-100">
+<body class="bg-gray-50">
 
   <!-- Header -->
-  <header class="flex items-center justify-center p-4 bg-white shadow-md">
+  <header class="flex items-center justify-center p-4 bg-white shadow-md rounded-lg">
     <div class="flex flex-col items-center">
       <img alt="logo" class="rounded-full" height="50" width="50" src="logo.webp">
-      <h1 class="text-lg font-semibold mt-2">AQI Home Page</h1>
+      <h1 class="text-lg font-semibold mt-2 text-indigo-600">AQI Home Page</h1>
     </div>
   </header>
-
-  <!-- Main Content -->
   <main class="p-4">
     <div class="outer">
       <div class="inner1">
-        <div class="lastinner1 p-4">
-
-          <h2 class="text-white text-center text-xl mb-4">Registration Form</h2>
-
+        <div class="lastinner1 p-4 rounded-t-lg">
+          <h2 class="text-white text-center text-xl mb-4 font-bold">Registration Form</h2>
           <!-- Registration Form -->
           <form id="registrationForm" action="/action_page.php">
-
-            <label for="fname">Full Name:</label><br>
-            <input type="text" id="fname" name="fname" class="w-full border p-1 mb-2" required><br>
-
-            <label for="mail">Email:</label><br>
-            <input type="email" id="mail" name="mail" class="w-full border p-1 mb-2" required><br>
-
-            <label for="pass">Password:</label><br>
-            <input type="password" id="pass" name="pass" class="w-full border p-1 mb-2" required><br>
-
-            <label for="repass">Confirm Password:</label><br>
-            <input type="password" id="repass" name="repass" class="w-full border p-1 mb-2" required><br>
-
-            <label for="dob">Date of Birth:</label><br>
-            <input type="date" id="dob" name="dob" class="w-full border p-1 mb-2" required><br>
-
-            <p>Please choose a gender:</p>
-            <input type="radio" id="male" name="gender" value="Male" required>
-            <label for="male">Male</label><br>
-
-            <input type="radio" id="female" name="gender" value="Female">
-            <label for="female">Female</label><br><br>
-
-            <label for="country">Country <span style="color: red;">*</span></label><br>
-            <select id="country" name="country" class="w-full border p-1 mb-2" required>
+            <label for="fname" class="text-white font-medium">Full Name:</label>
+            <input type="text" id="fname" name="fname" class="w-full border p-1 mb-2 rounded" required>
+            
+            <label for="mail" class="text-white font-medium">Email:</label>
+            <input type="email" id="mail" name="mail" class="w-full border p-1 mb-2 rounded" required>
+            
+            <label for="pass" class="text-white font-medium">Password:</label>
+            <input type="password" id="pass" name="pass" class="w-full border p-1 mb-2 rounded" required>
+            
+            <label for="repass" class="text-white font-medium">Confirm Password:</label>
+            <input type="password" id="repass" name="repass" class="w-full border p-1 mb-2 rounded" required>
+            
+            <label for="dob" class="text-white font-medium">Date of Birth:</label>
+            <input type="date" id="dob" name="dob" class="w-full border p-1 mb-2 rounded" required>
+            
+            <p class="text-white font-medium">Please choose a gender:</p>
+            <div class="flex items-center mb-2">
+              <input type="radio" id="male" name="gender" value="Male" required class="mr-1">
+              <label for="male" class="text-white mr-3">Male</label>
+              <input type="radio" id="female" name="gender" value="Female" class="mr-1">
+              <label for="female" class="text-white">Female</label>
+            </div>
+            
+            <label for="country" class="text-white font-medium">Country <span class="text-red-300">*</span></label>
+            <select id="country" name="country" class="w-full border p-1 mb-2 rounded" required>
               <option value="">Choose your Country</option>
               <option value="Bangladesh">Bangladesh</option>
               <option value="India">India</option>
               <option value="United States">United States</option>
               <option value="Australia">Australia</option>
               <option value="Canada">Canada</option>
-              <!-- You can add more countries here -->
-            </select><br>
-
+            </select>
+            
             <label class="inline-flex items-center mt-2">
               <input type="checkbox" id="termsCheckbox" class="mr-2">
-              I agree to the <a href="terms.html" target="_blank" class="underline text-blue-300">Terms and Conditions</a>
-            </label><br><br>
-
-            <input type="submit" name="submit" value="Submit" class="bg-white text-blue-500 font-semibold py-1 px-4 rounded hover:bg-blue-500 hover:text-white transition">
+              <span class="text-white">I agree to the <a href="terms.html" target="_blank" class="underline text-indigo-200 hover:text-indigo-100">Terms and Conditions</a></span>
+            </label>
+            
+            <div class="text-center mt-3">
+              <input type="submit" name="submit" value="Submit" class="bg-white text-indigo-600 font-semibold py-1 px-4 rounded hover:bg-indigo-100 transition cursor-pointer shadow">
+            </div>
           </form>
-
         </div>
-
-        <div class="lastinner2 p-4">
-          <!-- You can put something here later -->
+        <div class="lastinner2 p-4 rounded-b-lg">
         </div>
       </div>
-
-      <div class="inner2">
-        <!-- Another box -->
+      <div class="inner2 rounded-lg flex items-center justify-center">
+        <p class="text-white text-center p-4 font-medium">Get real-time air quality updates for your area</p>
       </div>
     </div>
   </main>
-
-  <!-- JavaScript Validation -->
   <script>
-    document.getElementById('registrationForm').addEventListener('submit', function(event) {
-      if (!document.getElementById('termsCheckbox').checked) {
-        alert('You must agree to the Terms and Conditions.');
-        event.preventDefault(); // Stop form submission
-      }
-    });
-  </script>
+    document.addEventListener('DOMContentLoaded', function() {
+  const form = document.getElementById('registrationForm');
 
-</body>
+  form.addEventListener('submit', function(e) {
+    e.preventDefault();
+    clearErrors();
+
+    let isValid = true;
+
+    const fname = document.getElementById('fname').value.trim();
+    if (fname === '') {
+      showError('fnameError', 'Full name is required');
+      isValid = false;
+    }
+
+    const email = document.getElementById('mail').value.trim();
+    if (email === '') {
+      showError('mailError', 'Email is required');
+      isValid = false;
+    } else if (!validateEmail(email)) {
+      showError('mailError', 'Please enter a valid email');
+      isValid = false;
+    }
+
+    const password = document.getElementById('pass').value;
+    if (password === '') {
+      showError('passError', 'Password is required');
+      isValid = false;
+    } else if (password.length < 8) {
+      showError('passError', 'Password must be at least 8 characters');
+      isValid = false;
+    }
+
+    const repass = document.getElementById('repass').value;
+    if (repass === '') {
+      showError('repassError', 'Please confirm your password');
+      isValid = false;
+    } else if (repass !== password) {
+      showError('repassError', 'Passwords do not match');
+      isValid = false;
+    }
+
+    const dob = document.getElementById('dob').value;
+    if (dob === '') {
+      showError('dobError', 'Date of birth is required');
+      isValid = false;
+    } else {
+      const dobDate = new Date(dob);
+      const today = new Date();
+      if (dobDate >= today) {
+        showError('dobError', 'Date must be in the past');
+        isValid = false;
+      }
+    }
+
+    const gender = document.querySelector('input[name="gender"]:checked');
+    if (!gender) {
+      showError('genderError', 'Please select a gender');
+      isValid = false;
+    }
+
+    const country = document.getElementById('country').value;
+    if (country === '') {
+      showError('countryError', 'Please select a country');
+      isValid = false;
+    }
+
+    const termsChecked = document.getElementById('termsCheckbox').checked;
+    if (!termsChecked) {
+      showError('termsError', 'You must agree to the terms and conditions');
+      isValid = false;
+    }
+
+    if (isValid) {
+      alert('Form submitted successfully!');
+      form.reset();
+    }
+  });
+
+  function showError(id, message) {
+    let errorElement = document.getElementById(id);
+    if (!errorElement) {
+      errorElement = document.createElement('div');
+      errorElement.id = id;
+      errorElement.className = 'text-red-500 text-xs mt-1 error';
+      const inputField = document.getElementById(id.replace('Error', ''));
+      if (inputField) {
+        inputField.insertAdjacentElement('afterend', errorElement);
+      }
+    }
+    errorElement.textContent = message;
+  }
+
+  function clearErrors() {
+    const errors = document.querySelectorAll('.error');
+    errors.forEach(error => error.remove());
+  }
+
+  function validateEmail(email) {
+    const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return re.test(email);
+  }
+});
+  </script>
+ </body>
 </html>
