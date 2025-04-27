@@ -254,12 +254,24 @@
   
     <script>
         function validate() {
+            let x = document.getElementById('udata'); // dom object 
+            function validate() {
+                let y = /\d/.test(x.value); // REGEX
+                if (y) {
+                    document.getElementById('data').innerHTML="ALPHANUMERIC";
+                   
+                }
+                else 
+                document.getElementById('data').innerHTML="OK";
+
+                return false;
             const checkbox = document.getElementById('termsCheckbox');
             if (!checkbox.checked) {
                 alert('Please agree to the Terms and Conditions.');
                 return false;
             }
             return true;
+        }
         }
     </script>
 </body>
