@@ -4,187 +4,125 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Air Quality Index</title>
+  <script src="https://cdn.tailwindcss.com"></script>
   <link rel="icon" type="image/ico" href="logo.webp">
   <style>
-    body, html {
-      height: 100%;
-      margin: 0;
-    }
-
-    body {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      background-color: #f3f4f6; /* bg-gray-100 */
-      font-size: small;
-      color: coral;
-    }
-
-    header {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      padding: 20px;
-      background-color: white;
-      width: 100%;
-      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    }
-
-    main {
-      flex: 1;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      width: 100%;
-      padding: 20px;
-    }
-
     .outer {
       display: flex;
       justify-content: center;
-      align-items: center;
-      width: 80%;
-      max-width: 1000px;
+      height: 200px;
     }
-
     .inner1 {
-      width: 50%;
-      background-color: white;
-      border-radius: 8px;
-      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-      overflow: hidden;
+      height: 600px;
+      width: 250px;
     }
-
-    .lastinner1 {
-      padding: 20px;
-      background-color: #e0f2fe; /* light blue */
-    }
-
-    .lastinner2 {
-      height: 40px;
-      background-color: pink;
-    }
-
     .inner2 {
-      width: 30%;
-      height: 400px;
-      margin-left: 20px;
+      display: flex;
+      height: 600px;
+      width: 250px;
       background-color: green;
     }
-
-    form input, form select {
-      width: 100%;
-      padding: 8px;
-      margin-top: 5px;
-      margin-bottom: 15px;
-      border: 1px solid #ccc;
-      border-radius: 4px;
+    .lastinner1 {
+      height: 350px;
+      width: 250px;
+      background-color: blue;
     }
-
-    form label {
-      font-weight: bold;
+    .lastinner2 {
+      height: 250px;
+      width: 250px;
+      background-color: pink;
     }
-
-    .submit-button {
-      background-color: coral;
-      color: white;
-      border: none;
-      padding: 10px;
-      width: 100%;
-      border-radius: 4px;
-      cursor: pointer;
-    }
-
-    .submit-button:hover {
-      background-color: darkorange;
+    body {
+      font-size: small;
+      margin: 20px;
+      color: coral;
     }
   </style>
 </head>
 
-<body>
+<body class="bg-gray-100">
+
   <!-- Header -->
-  <header>
-    <img src="logo.webp" alt="logo" height="80" width="80" class="rounded-full">
-    <h1 class="text-lg font-semibold mt-2">AQI Home Page</h1>
+  <header class="flex items-center justify-center p-4 bg-white shadow-md">
+    <div class="flex flex-col items-center">
+      <img alt="logo" class="rounded-full" height="50" width="50" src="logo.webp">
+      <h1 class="text-lg font-semibold mt-2">AQI Home Page</h1>
+    </div>
   </header>
 
   <!-- Main Content -->
-  <main>
+  <main class="p-4">
     <div class="outer">
       <div class="inner1">
-        <div class="lastinner1">
-          <h2>Registration Form</h2>
-          <form action="/action_page.php" onsubmit="return validate();">
-            <label for="fname">Full Name:</label>
-            <input type="text" id="fname" name="fname" required>
+        <div class="lastinner1 p-4">
 
-            <label for="mail">Email:</label>
-            <input type="email" id="mail" name="mail" required>
+          <h2 class="text-white text-center text-xl mb-4">Registration Form</h2>
 
-            <label for="pass">Password:</label>
-            <input type="password" id="pass" name="pass" required>
+          <!-- Registration Form -->
+          <form id="registrationForm" action="/action_page.php">
 
-            <label for="repass">Confirm Password:</label>
-            <input type="password" id="repass" name="repass" required>
+            <label for="fname">Full Name:</label><br>
+            <input type="text" id="fname" name="fname" class="w-full border p-1 mb-2" required><br>
 
-            <label for="dob">Date of Birth:</label>
-            <input type="date" id="dob" name="dob" required>
+            <label for="mail">Email:</label><br>
+            <input type="email" id="mail" name="mail" class="w-full border p-1 mb-2" required><br>
+
+            <label for="pass">Password:</label><br>
+            <input type="password" id="pass" name="pass" class="w-full border p-1 mb-2" required><br>
+
+            <label for="repass">Confirm Password:</label><br>
+            <input type="password" id="repass" name="repass" class="w-full border p-1 mb-2" required><br>
+
+            <label for="dob">Date of Birth:</label><br>
+            <input type="date" id="dob" name="dob" class="w-full border p-1 mb-2" required><br>
 
             <p>Please choose a gender:</p>
             <input type="radio" id="male" name="gender" value="Male" required>
             <label for="male">Male</label><br>
+
             <input type="radio" id="female" name="gender" value="Female">
             <label for="female">Female</label><br><br>
 
-            <label for="country">Country:</label>
-            <select id="country" name="country" required>
-              <option value="">Choose the Country</option>
+            <label for="country">Country <span style="color: red;">*</span></label><br>
+            <select id="country" name="country" class="w-full border p-1 mb-2" required>
+              <option value="">Choose your Country</option>
               <option value="Bangladesh">Bangladesh</option>
               <option value="India">India</option>
               <option value="United States">United States</option>
-              <option value="Canada">Canada</option>
               <option value="Australia">Australia</option>
-              <!-- Add more if needed -->
-            </select>
+              <option value="Canada">Canada</option>
+              <!-- You can add more countries here -->
+            </select><br>
 
-            <br><br>
+            <label class="inline-flex items-center mt-2">
+              <input type="checkbox" id="termsCheckbox" class="mr-2">
+              I agree to the <a href="terms.html" target="_blank" class="underline text-blue-300">Terms and Conditions</a>
+            </label><br><br>
 
-            <label>
-              <input type="checkbox" id="termsCheckbox" required>
-              I agree to the <a href="terms.html" target="_blank">Terms and Conditions</a>
-            </label>
-
-            <br><br>
-
-            <input type="submit" value="Submit" class="submit-button">
+            <input type="submit" name="submit" value="Submit" class="bg-white text-blue-500 font-semibold py-1 px-4 rounded hover:bg-blue-500 hover:text-white transition">
           </form>
+
         </div>
-        <div class="lastinner2"></div>
+
+        <div class="lastinner2 p-4">
+          <!-- You can put something here later -->
+        </div>
       </div>
 
-      <div class="inner2"></div>
+      <div class="inner2">
+        <!-- Another box -->
+      </div>
     </div>
   </main>
 
+  <!-- JavaScript Validation -->
   <script>
-    function validate() {
-      const pass = document.getElementById('pass').value;
-      const repass = document.getElementById('repass').value;
-      const terms = document.getElementById('termsCheckbox').checked;
-
-      if (pass !== repass) {
-        alert('Passwords do not match!');
-        return false;
+    document.getElementById('registrationForm').addEventListener('submit', function(event) {
+      if (!document.getElementById('termsCheckbox').checked) {
+        alert('You must agree to the Terms and Conditions.');
+        event.preventDefault(); // Stop form submission
       }
-
-      if (!terms) {
-        alert('You must agree to the terms and conditions.');
-        return false;
-      }
-
-      return true;
-    }
+    });
   </script>
 
 </body>
