@@ -1,179 +1,162 @@
-// script.js
 document.addEventListener('DOMContentLoaded', function() {
-    // Registration Form Elements
-    const registrationForm = document.getElementById('registrationForm');
-    const termsModal = document.getElementById('termsModal');
-    const termsLink = document.getElementById('termsLink');
-    const closeTerms = document.getElementById('closeTerms');
-    const successMessage = document.getElementById('successMessage');
-    const closeSuccess = document.getElementById('closeSuccess');
-  
-    // Login Form Elements
-    const loginForm = document.getElementById('loginForm');
-    const loginEmail = document.getElementById('loginEmail');
-    const loginPassword = document.getElementById('loginPassword');
-  
     // Terms and Conditions Modal
+    const termsLink = document.getElementById('termsLink');
+    const termsModal = document.getElementById('termsModal');
+    const closeTerms = document.getElementById('closeTerms');
+    
     termsLink.addEventListener('click', function(e) {
       e.preventDefault();
       termsModal.classList.remove('hidden');
     });
-  
+    
     closeTerms.addEventListener('click', function() {
       termsModal.classList.add('hidden');
     });
+    
+    // Close modals when clicking outside
+    [termsModal, document.getElementById('successMessage')].forEach(modal => {
+      modal.addEventListener('click', function(e) {
+        if (e.target === modal) {
+          modal.classList.add('hidden');
+        }
+      });
+    });
   
-    // Close success message
+    // Registration Form Validation
+    const registrationForm = document.getElementById('registrationForm');
+    const successMessage = document.getElementById('successMessage');
+    const closeSuccess = document.getElementById('closeSuccess');
+    
     closeSuccess.addEventListener('click', function() {
       successMessage.classList.add('hidden');
     });
   
-    // Registration Form validation
     registrationForm.addEventListener('submit', function(e) {
       e.preventDefault();
-      clearRegistrationErrors();
-  
-      // Validate form fields
       let isValid = true;
-  
+      
+      // Clear previous errors
+      document.querySelectorAll('.error').forEach(el => el.textContent = '');
+      
       // Full Name validation
       const fname = document.getElementById('fname').value.trim();
       if (fname === '') {
-        showError('fnameError', 'Full name is required');
+        document.getElementById('fnameError').textContent = 'Full name is required';
+        isValid = false;
+      } else if (fname.length < 3) {
+        document.getElementById('fnameError').textContent = 'Name must be at least 3 characters';
         isValid = false;
       }
-  
+      
       // Email validation
       const email = document.getElementById('mail').value.trim();
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
       if (email === '') {
-        showError('mailError', 'Email is required');
+        document.getElementById('mailError').textContent = 'Email is required';
         isValid = false;
-      } else if (!validateEmail(email)) {
-        showError('mailError', 'Please enter a valid email');
-        isValid = false;
-      }
-  
-      // Password validation
-      const password = document.getElementById('pass').value;
-      if (password === '') {
-        showError('passError', 'Password is required');
-        isValid = false;
-      } else if (password.length < 8) {
-        showError('passError', 'Password must be at least 8 characters');
-        isValid = false;
-      }
-  
-      // Confirm Password validation
-      const repass = document.getElementById('repass').value;
-      if (repass === '') {
-        showError('repassError', 'Please confirm your password');
-        isValid = false;
-      } else if (repass !== password) {
-        showError('repassError', 'Passwords do not match');
-        isValid = false;
-      }
-  
-      // Date of Birth validation
-      const dob = document.getElementById('dob').value;
-      if (dob === '') {
-        showError('dobError', 'Date of birth is required');
-        isValid = false;
-      } else {
-        const dobDate = new Date(dob);
-        const today = new Date();
-        if (dobDate >= today) {
-          showError('dobError', 'Date must be in the past');
-          isValid = false;
-        }
-      }
-  
-      // Gender validation
-      const gender = document.querySelector('input[name="gender"]:checked');
-      if (!gender) {
-        showError('genderError', 'Please select a gender');
-        isValid = false;
-      }
-  
-      // Country validation
-      const country = document.getElementById('country').value;
-      if (country === '') {
-        showError('countryError', 'Please select a country');
-        isValid = false;
-      }
-  
-      // Terms validation
-      const termsChecked = document.getElementById('termsCheckbox').checked;
-      if (!termsChecked) {
-        showError('termsError', 'You must agree to the terms and conditions');
-        isValid = false;
-      }
-  
-      if (isValid) {
-        // Simulate form submission
-        setTimeout(() => {
-          successMessage.classList.remove('hidden');
-          registrationForm.reset();
-        }, 500);
-      }
-    });
-  
-    // Login Form validation
-    loginForm.addEventListener('submit', function(e) {
-      e.preventDefault();
-      clearLoginErrors();
-  
-      let isValid = true;
-  
-      // Username validation
-      const email = loginEmail.value.trim();
-      if (email === '') {
-        showLoginError('Email is required');
+      } else if (!emailRegex.test(email)) {
+        document.getElementById('mailError').textContent = 'Please enter a valid email';
         isValid = false;
       }
       
       // Password validation
-      const password = loginPassword.value;
+      const password = document.getElementById('pass').value;
       if (password === '') {
-        showLoginError('Password is required');
+        document.getElementById('passError').textContent = 'Password is required';
+        isValid = false;
+      } else if (password.length < 8) {
+        document.getElementById('passError').textContent = 'Password must be at least 8 characters';
         isValid = false;
       }
-  
-      if (isValid) {
-        // Here you would typically make an AJAX call to your server
-        // For demo purposes, we'll just log the values
-        console.log('Login attempt with:', { username, password });
+      
+      // Confirm Password validation
+      const repass = document.getElementById('repass').value;
+      if (repass === '') {
+        document.getElementById('repassError').textContent = 'Please confirm your password';
+        isValid = false;
+      } else if (repass !== password) {
+        document.getElementById('repassError').textContent = 'Passwords do not match';
+        isValid = false;
+      }
+      
+      // Date of Birth validation (must be 18+)
+      const dob = document.getElementById('dob').value;
+      if (dob === '') {
+        document.getElementById('dobError').textContent = 'Date of birth is required';
+        isValid = false;
+      } else {
+        const dobDate = new Date(dob);
+        const today = new Date();
+        let age = today.getFullYear() - dobDate.getFullYear();
+        const monthDiff = today.getMonth() - dobDate.getMonth();
         
-        // Simulate successful login
+        if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < dobDate.getDate())) {
+          age--;
+        }
+        
+        if (age < 18) {
+          document.getElementById('dobError').textContent = 'You must be at least 18 years old';
+          isValid = false;
+        }
+      }
+      
+      // Gender validation
+      const genderSelected = document.querySelector('input[name="gender"]:checked');
+      if (!genderSelected) {
+        document.getElementById('genderError').textContent = 'Please select a gender';
+        isValid = false;
+      }
+      
+      // Country validation
+      const country = document.getElementById('country').value;
+      if (country === '') {
+        document.getElementById('countryError').textContent = 'Please select your country';
+        isValid = false;
+      }
+      
+      // Terms checkbox validation
+      const termsChecked = document.getElementById('termsCheckbox').checked;
+      if (!termsChecked) {
+        document.getElementById('termsError').textContent = 'You must agree to the terms and conditions';
+        isValid = false;
+      }
+      
+      if (isValid) {
+        // Form is valid, show success message
+        successMessage.classList.remove('hidden');
+        registrationForm.reset();
+      }
+    });
+  
+    // Login Form Validation
+    const loginForm = document.getElementById('loginForm');
+    
+    loginForm.addEventListener('submit', function(e) {
+      e.preventDefault();
+      let isValid = true;
+      
+      // Email validation
+      const loginEmail = document.getElementById('loginEmail').value.trim();
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (loginEmail === '') {
+        alert('Email is required');
+        isValid = false;
+      } else if (!emailRegex.test(loginEmail)) {
+        alert('Please enter a valid email');
+        isValid = false;
+      }
+      
+      // Password validation
+      const loginPassword = document.getElementById('loginPassword').value;
+      if (loginPassword === '') {
+        alert('Password is required');
+        isValid = false;
+      }
+      
+      if (isValid) {
+        // Here you would typically send the data to a server
         alert('Login successful! (This is a demo)');
         loginForm.reset();
       }
     });
-  
-    function showError(id, message) {
-      const errorElement = document.getElementById(id);
-      errorElement.textContent = message;
-    }
-  
-    function showLoginError(message) {
-      // For simplicity, we'll use an alert in this case
-      // In a real app, you might want to show this near the form
-      alert(message);
-    }
-  
-    function clearRegistrationErrors() {
-      const errors = document.querySelectorAll('.error');
-      errors.forEach(error => {
-        error.textContent = '';
-      });
-    }
-  
-    function clearLoginErrors() {
-      // Clear any existing login error displays
-      // (In this simple example, we're using alerts instead)
-    }
-  
-    function validateEmail(email) {
-      const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-      return re.test(email);
-    }
   });
