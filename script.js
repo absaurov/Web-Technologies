@@ -10,7 +10,7 @@ document.addEventListener('DOMContentLoaded', function() {
   
     // Login Form Elements
     const loginForm = document.getElementById('loginForm');
-    const loginUsername = document.getElementById('loginUsername');
+    const loginEmail = document.getElementById('loginEmail');
     const loginPassword = document.getElementById('loginPassword');
   
     // Terms and Conditions Modal
@@ -125,12 +125,12 @@ document.addEventListener('DOMContentLoaded', function() {
       let isValid = true;
   
       // Username validation
-      const username = loginUsername.value.trim();
-      if (username === '') {
-        showLoginError('Username is required');
+      const email = loginEmail.value.trim();
+      if (email === '') {
+        showLoginError('Email is required');
         isValid = false;
       }
-  
+      
       // Password validation
       const password = loginPassword.value;
       if (password === '') {
