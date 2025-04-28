@@ -128,10 +128,10 @@
               <select id="country" name="country" class="w-full border p-1 rounded" required>
                 <option value="">Choose your Country</option>
                 <option value="Bangladesh">Bangladesh</option>
-                <option value="India">India</option>
                 <option value="United States">United States</option>
                 <option value="Australia">Australia</option>
                 <option value="Canada">Canada</option>
+                <option value="India">India</option>
               </select>
               <div id="countryError" class="error"></div>
             </div>
@@ -152,7 +152,24 @@
           </form>
         </div>
         <div class="lastinner2 p-4 rounded-b-lg">
-          <!-- Empty container - content removed -->
+          <h3 class="text-white text-center text-xl mb-4 font-bold">Login Page</h2>
+            <form id="loginForm" class="space-y-3">
+              <div>
+                <label for="loginUsername" class="text-white font-medium">Username:</label>
+                <input type="text" id="loginUsername" name="loginUsername" class="w-full border p-1 rounded" required>
+              </div>
+          
+              <div>
+                <label for="loginPassword" class="text-white font-medium">Password:</label>
+                <input type="password" id="loginPassword" name="loginPassword" class="w-full border p-1 rounded" required>
+              </div>
+          
+              <div class="text-center mt-3">
+                <button type="submit" class="bg-white text-indigo-600 font-semibold py-1 px-4 rounded hover:bg-indigo-100 transition cursor-pointer shadow">
+                  Login
+                </button>
+              </div>
+            </form>
         </div>
       </div>
       <div class="inner2 rounded-lg flex items-center justify-center">
@@ -195,137 +212,6 @@
       <button id="closeSuccess" class="bg-indigo-600 text-white px-4 py-2 rounded hover:bg-indigo-700 w-full">Continue</button>
     </div>
   </div>
-
-  <script>
-    document.addEventListener('DOMContentLoaded', function() {
-      const form = document.getElementById('registrationForm');
-      const termsModal = document.getElementById('termsModal');
-      const termsLink = document.getElementById('termsLink');
-      const closeTerms = document.getElementById('closeTerms');
-      const successMessage = document.getElementById('successMessage');
-      const closeSuccess = document.getElementById('closeSuccess');
-
-      // Terms and Conditions Modal
-      termsLink.addEventListener('click', function(e) {
-        e.preventDefault();
-        termsModal.classList.remove('hidden');
-      });
-
-      closeTerms.addEventListener('click', function() {
-        termsModal.classList.add('hidden');
-      });
-
-      // Close success message
-      closeSuccess.addEventListener('click', function() {
-        successMessage.classList.add('hidden');
-      });
-
-      // Form validation
-      form.addEventListener('submit', function(e) {
-        e.preventDefault();
-        clearErrors();
-
-        // Validate form fields
-        let isValid = true;
-
-        // Full Name validation
-        const fname = document.getElementById('fname').value.trim();
-        if (fname === '') {
-          showError('fnameError', 'Full name is required');
-          isValid = false;
-        }
-
-        // Email validation
-        const email = document.getElementById('mail').value.trim();
-        if (email === '') {
-          showError('mailError', 'Email is required');
-          isValid = false;
-        } else if (!validateEmail(email)) {
-          showError('mailError', 'Please enter a valid email');
-          isValid = false;
-        }
-
-        // Password validation
-        const password = document.getElementById('pass').value;
-        if (password === '') {
-          showError('passError', 'Password is required');
-          isValid = false;
-        } else if (password.length < 8) {
-          showError('passError', 'Password must be at least 8 characters');
-          isValid = false;
-        }
-
-        // Confirm Password validation
-        const repass = document.getElementById('repass').value;
-        if (repass === '') {
-          showError('repassError', 'Please confirm your password');
-          isValid = false;
-        } else if (repass !== password) {
-          showError('repassError', 'Passwords do not match');
-          isValid = false;
-        }
-
-        // Date of Birth validation
-        const dob = document.getElementById('dob').value;
-        if (dob === '') {
-          showError('dobError', 'Date of birth is required');
-          isValid = false;
-        } else {
-          const dobDate = new Date(dob);
-          const today = new Date();
-          if (dobDate >= today) {
-            showError('dobError', 'Date must be in the past');
-            isValid = false;
-          }
-        }
-
-        // Gender validation
-        const gender = document.querySelector('input[name="gender"]:checked');
-        if (!gender) {
-          showError('genderError', 'Please select a gender');
-          isValid = false;
-        }
-
-        // Country validation
-        const country = document.getElementById('country').value;
-        if (country === '') {
-          showError('countryError', 'Please select a country');
-          isValid = false;
-        }
-
-        // Terms validation
-        const termsChecked = document.getElementById('termsCheckbox').checked;
-        if (!termsChecked) {
-          showError('termsError', 'You must agree to the terms and conditions');
-          isValid = false;
-        }
-
-        if (isValid) {
-          // Simulate form submission
-          setTimeout(() => {
-            successMessage.classList.remove('hidden');
-            form.reset();
-          }, 500);
-        }
-      });
-
-      function showError(id, message) {
-        const errorElement = document.getElementById(id);
-        errorElement.textContent = message;
-      }
-
-      function clearErrors() {
-        const errors = document.querySelectorAll('.error');
-        errors.forEach(error => {
-          error.textContent = '';
-        });
-      }
-
-      function validateEmail(email) {
-        const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        return re.test(email);
-      }
-    });
-  </script>
+<script src="script.js"></script>
 </body>
 </html>
