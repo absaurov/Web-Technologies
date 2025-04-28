@@ -36,7 +36,7 @@ document.addEventListener('DOMContentLoaded', function() {
       let isValid = true;
       
       // Clear previous errors
-      document.querySelectorAll('.error').forEach(el => el.textContent = '');
+      document.querySelectorAll('#registrationForm .error').forEach(el => el.textContent = '');
       
       // Full Name validation
       const fname = document.getElementById('fname').value.trim();
@@ -128,34 +128,63 @@ document.addEventListener('DOMContentLoaded', function() {
       }
     });
   
-    // Login Form Validation
+    // Login Form Validation - Updated to match registration style
     const loginForm = document.getElementById('loginForm');
+    
+    // Add error message divs for login form
+    const loginEmailDiv = document.createElement('div');
+    loginEmailDiv.id = 'loginEmailError';
+    loginEmailDiv.className = 'error';
+    document.getElementById('loginEmail').after(loginEmailDiv);
+    
+    const loginPasswordDiv = document.createElement('div');
+    loginPasswordDiv.id = 'loginPasswordError';
+    loginPasswordDiv.className = 'error';
+    document.getElementById('loginPassword').after(loginPasswordDiv);
+    
+    // Add success message div for login
+    const loginSuccessDiv = document.createElement('div');
+    loginSuccessDiv.id = 'loginSuccessMessage';
+    loginSuccessDiv.className = 'text-center mt-2 hidden';
+    loginForm.appendChild(loginSuccessDiv);
     
     loginForm.addEventListener('submit', function(e) {
       e.preventDefault();
       let isValid = true;
       
+      // Clear previous errors
+      document.querySelectorAll('#loginForm .error').forEach(el => el.textContent = '');
+      loginSuccessDiv.classList.add('hidden');
+      
       // Email validation
       const loginEmail = document.getElementById('loginEmail').value.trim();
       const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
       if (loginEmail === '') {
-        alert('Email is required');
+        document.getElementById('loginEmailError').textContent = 'Email is required';
         isValid = false;
       } else if (!emailRegex.test(loginEmail)) {
-        alert('Please enter a valid email');
+        document.getElementById('loginEmailError').textContent = 'Please enter a valid email';
         isValid = false;
       }
       
       // Password validation
       const loginPassword = document.getElementById('loginPassword').value;
       if (loginPassword === '') {
-        alert('Password is required');
+        document.getElementById('loginPasswordError').textContent = 'Password is required';
         isValid = false;
       }
       
       if (isValid) {
         // Here you would typically send the data to a server
-        alert('Login successful! (This is a demo)');
+        loginSuccessDiv.innerHTML = `
+          <div class="inline-flex items-center bg-green-100 text-green-700 px-4 py-2 rounded">
+            <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+            </svg>
+            Login successful!
+          </div>
+        `;
+        loginSuccessDiv.classList.remove('hidden');
         loginForm.reset();
       }
     });
