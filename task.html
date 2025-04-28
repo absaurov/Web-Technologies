@@ -50,7 +50,7 @@
       border: 1px solid #cbd5e0;
     }
     .error {
-      color: #fecaca; /* Light red for errors */
+      color: #e40f0f; /* Light red for errors */
       font-size: 0.75rem;
       margin-top: -0.25rem;
       margin-bottom: 0.25rem;
@@ -155,15 +155,17 @@
           <h3 class="text-white text-center text-xl mb-4 font-bold">Login Page</h2>
             <form id="loginForm" class="space-y-3">
               <div>
-               
+                <label for="loginEmail" class="text-white font-medium">Email:</label>
+                <input type="email" id="loginEmail" name="loginEmail" class="w-full border p-1 rounded" required>                
               </div>
-          
               <div>
-               
+                <label for="loginPassword" class="text-white font-medium">Password:</label>
+                <input type="password" id="loginPassword" name="loginPassword" class="w-full border p-1 rounded" required>
               </div>
-          
               <div class="text-center mt-3">
-                
+                <button type="submit" class="bg-white text-indigo-600 font-semibold py-1 px-4 rounded hover:bg-indigo-100 transition cursor-pointer shadow">
+                  Login
+                </button>
               </div>
             </form>
         </div>
