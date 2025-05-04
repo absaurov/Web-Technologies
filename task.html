@@ -55,6 +55,28 @@
       margin-top: -0.25rem;
       margin-bottom: 0.25rem;
     }
+    /* Style for the table */
+    .aqi-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 10px;
+    }
+    .aqi-table th, .aqi-table td {
+      border: 1px solid #e2e8f0;
+      padding: 6px;
+      text-align: left;
+      color: white;
+    }
+    .aqi-table th {
+      background-color: #2c7a7b; /* Darker teal */
+      font-weight: bold;
+    }
+    .aqi-table tr:nth-child(even) {
+      background-color: #4fd1c5; /* Lighter teal */
+    }
+    .aqi-table tr:nth-child(odd) {
+      background-color: #38b2ac; /* Base teal */
+    }
   </style>
 </head>
 
@@ -171,11 +193,62 @@
         </div>
       </div> 
       <div class="inner2 rounded-lg flex items-center justify-center">
-        <div class="text-center p-4">
-          <svg class="w-10 h-10 mx-auto mb-2 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
-          </svg>
-          <p class="text-white font-medium">Get real-time air quality updates</p>
+        <div class="text-center p-4 w-full">
+          <h3 class="text-white text-xl font-bold mb-4">Air Quality Index</h3>
+          <table class="aqi-table">
+            <thead>
+              <tr>
+                <th>City</th>
+                <th>AQI</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>New York</td>
+                <td>45</td>
+              </tr>
+              <tr>
+                <td>Los Angeles</td>
+                <td>62</td>
+              </tr>
+              <tr>
+                <td>Chicago</td>
+                <td>38</td>
+              </tr>
+              <tr>
+                <td>Houston</td>
+                <td>57</td>
+              </tr>
+              <tr>
+                <td>Phoenix</td>
+                <td>68</td>
+              </tr>
+              <tr>
+                <td>Philadelphia</td>
+                <td>42</td>
+              </tr>
+              <tr>
+                <td>San Antonio</td>
+                <td>53</td>
+              </tr>
+              <tr>
+                <td>San Diego</td>
+                <td>39</td>
+              </tr>
+              <tr>
+                <td>Dallas</td>
+                <td>49</td>
+              </tr>
+              <tr>
+                <td>San Jose</td>
+                <td>36</td>
+              </tr>
+            </tbody>
+          </table>
+          <div class="mt-4 text-white text-sm">
+            <p>AQI Scale: 0-50 (Good)</p>
+            <p>51-100 (Moderate)</p>
+          </div>
         </div>
       </div>
     </div>
