@@ -194,7 +194,18 @@
       </div> 
       <div class="inner2 rounded-lg flex items-center justify-center">
         <div class="text-center p-4 w-full">
-          <h3 class="text-white text-xl font-bold mb-4">Air Quality Index</h3>   
+          <h3 class="text-white text-xl font-bold mb-4">Air Quality Index</h3>
+          <div class="mb-4">
+            <label for="citySelect" class="text-white font-medium block mb-2">Select City:</label>
+            <select id="citySelect" name="citySelect" class="w-full border p-1 rounded bg-white">
+              <option value="">Select a country first</option>
+            </select>
+          </div>
+          <div class="bg-white bg-opacity-20 p-3 rounded-lg">
+            <h4 class="text-white font-medium mb-2">Current AQI:</h4>
+            <div id="aqiValue" class="text-4xl font-bold text-white mb-2">--</div>
+            <div id="aqiStatus" class="text-white italic">Select a city to view AQI</div>
+          </div>
         </div>
       </div>
     </div>
@@ -229,6 +240,7 @@
       <button id="closeSuccess" class="bg-indigo-600 text-white px-4 py-2 rounded hover:bg-indigo-700 w-full">Continue</button>
     </div>
   </div>
+
 <script src="script.js"></script>
 </body>
 </html>

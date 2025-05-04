@@ -1,191 +1,419 @@
+/**
+ * AQI Application - Main JavaScript File
+ * Handles form validation, city selection, and AQI display
+ */
+
+// Configuration - City data for each country
+const cityData = {
+  "Bangladesh": ["Dhaka", "Chittagong", "Khulna", "Rajshahi", "Sylhet"],
+  "United States": ["New York", "Los Angeles", "Chicago", "Houston", "Phoenix"],
+  "Australia": ["Sydney", "Melbourne", "Brisbane", "Perth", "Adelaide"],
+  "Canada": ["Toronto", "Vancouver", "Montreal", "Calgary", "Ottawa"],
+  "India": ["Delhi", "Mumbai", "Bangalore", "Hyderabad", "Chennai"]
+};
+
+// AQI Status descriptions
+const aqiStatusData = [
+  { range: [0, 50], level: "Good", description: "Air quality is satisfactory" },
+  { range: [51, 100], level: "Moderate", description: "Acceptable quality" },
+  { range: [101, 150], level: "Unhealthy for Sensitive Groups", description: "Mild health effects" },
+  { range: [151, 200], level: "Unhealthy", description: "Health effects possible" },
+  { range: [201, 300], level: "Very Unhealthy", description: "Health alert" },
+  { range: [301, 500], level: "Hazardous", description: "Emergency conditions" }
+];
+
+// DOM Elements
+const elements = {
+  countrySelect: document.getElementById('country'),
+  citySelect: document.getElementById('citySelect'),
+  aqiValue: document.getElementById('aqiValue'),
+  aqiStatus: document.getElementById('aqiStatus'),
+  termsModal: document.getElementById('termsModal'),
+  termsLink: document.getElementById('termsLink'),
+  closeTerms: document.getElementById('closeTerms'),
+  successMessage: document.getElementById('successMessage'),
+  closeSuccess: document.getElementById('closeSuccess'),
+  registrationForm: document.getElementById('registrationForm'),
+  loginForm: document.getElementById('loginForm'),
+  // Form fields for validation
+  fname: document.getElementById('fname'),
+  mail: document.getElementById('mail'),
+  pass: document.getElementById('pass'),
+  repass: document.getElementById('repass'),
+  dob: document.getElementById('dob'),
+  termsCheckbox: document.getElementById('termsCheckbox')
+};
+
+// Initialize the application
 document.addEventListener('DOMContentLoaded', function() {
-    // Terms and Conditions Modal
-    const termsLink = document.getElementById('termsLink');
-    const termsModal = document.getElementById('termsModal');
-    const closeTerms = document.getElementById('closeTerms');
-    
-    termsLink.addEventListener('click', function(e) {
-      e.preventDefault();
-      termsModal.classList.remove('hidden');
-    });
-    
-    closeTerms.addEventListener('click', function() {
-      termsModal.classList.add('hidden');
-    });
-    
-    // Close modals when clicking outside
-    [termsModal, document.getElementById('successMessage')].forEach(modal => {
-      modal.addEventListener('click', function(e) {
-        if (e.target === modal) {
-          modal.classList.add('hidden');
-        }
-      });
-    });
+  setupEventListeners();
+});
+
+/**
+ * Sets up all event listeners for the application
+ */
+function setupEventListeners() {
+  // Country and city selection
+  if (elements.countrySelect) {
+    elements.countrySelect.addEventListener('change', handleCountryChange);
+  }
+
+  if (elements.citySelect) {
+    elements.citySelect.addEventListener('change', handleCityChange);
+  }
+
+  // Modal controls
+  if (elements.termsLink && elements.closeTerms) {
+    elements.termsLink.addEventListener('click', showTermsModal);
+    elements.closeTerms.addEventListener('click', hideTermsModal);
+  }
+
+  if (elements.closeSuccess) {
+    elements.closeSuccess.addEventListener('click', hideSuccessMessage);
+  }
+
+  // Form submissions
+  if (elements.registrationForm) {
+    elements.registrationForm.addEventListener('submit', handleRegistrationSubmit);
+  }
+
+  if (elements.loginForm) {
+    elements.loginForm.addEventListener('submit', handleLoginSubmit);
+  }
+
+  // Real-time form validation
+  setupFormValidation();
+}
+
+/**
+ * Handles country selection change - populates cities dropdown
+ */
+function handleCountryChange() {
+  const selectedCountry = this.value;
   
-    // Registration Form Validation
-    const registrationForm = document.getElementById('registrationForm');
-    const successMessage = document.getElementById('successMessage');
-    const closeSuccess = document.getElementById('closeSuccess');
-    
-    closeSuccess.addEventListener('click', function() {
-      successMessage.classList.add('hidden');
-    });
+  // Reset city dropdown
+  elements.citySelect.innerHTML = '<option value="">Select a city</option>';
+  elements.aqiValue.textContent = "--";
+  elements.aqiStatus.textContent = "Select a city to view AQI";
   
-    registrationForm.addEventListener('submit', function(e) {
-      e.preventDefault();
-      let isValid = true;
-      
-      // Clear previous errors
-      document.querySelectorAll('#registrationForm .error').forEach(el => el.textContent = '');
-      
-      // Full Name validation
-      const fname = document.getElementById('fname').value.trim();
-      if (fname === '') {
-        document.getElementById('fnameError').textContent = 'Full name is required';
-        isValid = false;
-      } else if (fname.length < 3) {
-        document.getElementById('fnameError').textContent = 'Name must be at least 3 characters';
-        isValid = false;
-      }
-      
-      // Email validation
-      const email = document.getElementById('mail').value.trim();
-      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-      if (email === '') {
-        document.getElementById('mailError').textContent = 'Email is required';
-        isValid = false;
-      } else if (!emailRegex.test(email)) {
-        document.getElementById('mailError').textContent = 'Please enter a valid email';
-        isValid = false;
-      }
-      
-      // Password validation
-      const password = document.getElementById('pass').value;
-      if (password === '') {
-        document.getElementById('passError').textContent = 'Password is required';
-        isValid = false;
-      } else if (password.length < 8) {
-        document.getElementById('passError').textContent = 'Password must be at least 8 characters';
-        isValid = false;
-      }
-      
-      // Confirm Password validation
-      const repass = document.getElementById('repass').value;
-      if (repass === '') {
-        document.getElementById('repassError').textContent = 'Please confirm your password';
-        isValid = false;
-      } else if (repass !== password) {
-        document.getElementById('repassError').textContent = 'Passwords do not match';
-        isValid = false;
-      }
-      
-      // Date of Birth validation (must be 18+)
-      const dob = document.getElementById('dob').value;
-      if (dob === '') {
-        document.getElementById('dobError').textContent = 'Date of birth is required';
-        isValid = false;
-      } else {
-        const dobDate = new Date(dob);
-        const today = new Date();
-        let age = today.getFullYear() - dobDate.getFullYear();
-        const monthDiff = today.getMonth() - dobDate.getMonth();
-        
-        if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < dobDate.getDate())) {
-          age--;
-        }
-        
-        if (age < 18) {
-          document.getElementById('dobError').textContent = 'You must be at least 18 years old';
-          isValid = false;
-        }
-      }
-      
-      // Gender validation
-      const genderSelected = document.querySelector('input[name="gender"]:checked');
-      if (!genderSelected) {
-        document.getElementById('genderError').textContent = 'Please select a gender';
-        isValid = false;
-      }
-      
-      // Country validation
-      const country = document.getElementById('country').value;
-      if (country === '') {
-        document.getElementById('countryError').textContent = 'Please select your country';
-        isValid = false;
-      }
-      
-      // Terms checkbox validation
-      const termsChecked = document.getElementById('termsCheckbox').checked;
-      if (!termsChecked) {
-        document.getElementById('termsError').textContent = 'You must agree to the terms and conditions';
-        isValid = false;
-      }
-      
-      if (isValid) {
-        // Form is valid, show success message
-        successMessage.classList.remove('hidden');
-        registrationForm.reset();
-      }
+  // Populate cities if a country is selected
+  if (selectedCountry && cityData[selectedCountry]) {
+    cityData[selectedCountry].forEach(city => {
+      const option = document.createElement('option');
+      option.value = city;
+      option.textContent = city;
+      elements.citySelect.appendChild(option);
     });
+  }
+}
+
+/**
+ * Handles city selection change - displays mock AQI data
+ */
+function handleCityChange() {
+  if (this.value) {
+    // Generate random AQI between 0-300 for demo
+    const randomAqi = Math.floor(Math.random() * 300);
+    displayAqiData(randomAqi);
+  } else {
+    elements.aqiValue.textContent = "--";
+    elements.aqiStatus.textContent = "Select a city to view AQI";
+  }
+}
+
+/**
+ * Displays AQI data with appropriate status
+ * @param {number} aqiValue - The AQI value to display
+ */
+function displayAqiData(aqiValue) {
+  elements.aqiValue.textContent = aqiValue;
   
-    // Login Form Validation - Updated to match registration style
-    const loginForm = document.getElementById('loginForm');
-    
-    // Add error message divs for login form
-    const loginEmailDiv = document.createElement('div');
-    loginEmailDiv.id = 'loginEmailError';
-    loginEmailDiv.className = 'error';
-    document.getElementById('loginEmail').after(loginEmailDiv);
-    
-    const loginPasswordDiv = document.createElement('div');
-    loginPasswordDiv.id = 'loginPasswordError';
-    loginPasswordDiv.className = 'error';
-    document.getElementById('loginPassword').after(loginPasswordDiv);
-    
-    // Add success message div for login
-    const loginSuccessDiv = document.createElement('div');
-    loginSuccessDiv.id = 'loginSuccessMessage';
-    loginSuccessDiv.className = 'text-center mt-2 hidden';
-    loginForm.appendChild(loginSuccessDiv);
-    
-    loginForm.addEventListener('submit', function(e) {
-      e.preventDefault();
-      let isValid = true;
-      
-      // Clear previous errors
-      document.querySelectorAll('#loginForm .error').forEach(el => el.textContent = '');
-      loginSuccessDiv.classList.add('hidden');
-      
-      // Email validation
-      const loginEmail = document.getElementById('loginEmail').value.trim();
-      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-      if (loginEmail === '') {
-        document.getElementById('loginEmailError').textContent = 'Email is required';
-        isValid = false;
-      } else if (!emailRegex.test(loginEmail)) {
-        document.getElementById('loginEmailError').textContent = 'Please enter a valid email';
-        isValid = false;
-      }
-      
-      // Password validation
-      const loginPassword = document.getElementById('loginPassword').value;
-      if (loginPassword === '') {
-        document.getElementById('loginPasswordError').textContent = 'Password is required';
-        isValid = false;
-      }
-      
-      if (isValid) {
-        // Here you would typically send the data to a server
-        loginSuccessDiv.innerHTML = `
-          <div class="inline-flex items-center bg-green-100 text-green-700 px-4 py-2 rounded">
-            <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
-            </svg>
-            Login successful!
-          </div>
-        `;
-        loginSuccessDiv.classList.remove('hidden');
-        loginForm.reset();
-      }
-    });
+  // Find matching status description
+  const status = aqiStatusData.find(item => 
+    aqiValue >= item.range[0] && aqiValue <= item.range[1]
+  ) || { level: "Unknown", description: "No data available" };
+  
+  elements.aqiStatus.textContent = `${status.level} - ${status.description}`;
+  
+  // Add color coding based on AQI level
+  const aqiColors = {
+    "Good": "text-green-500",
+    "Moderate": "text-yellow-500",
+    "Unhealthy for Sensitive Groups": "text-orange-500",
+    "Unhealthy": "text-red-500",
+    "Very Unhealthy": "text-purple-500",
+    "Hazardous": "text-red-800"
+  };
+  
+  // Remove all color classes first
+  elements.aqiValue.classList.remove(
+    "text-green-500", "text-yellow-500", "text-orange-500",
+    "text-red-500", "text-purple-500", "text-red-800"
+  );
+  
+  // Add appropriate color class
+  if (aqiColors[status.level]) {
+    elements.aqiValue.classList.add(aqiColors[status.level]);
+  }
+}
+
+/**
+ * Shows the Terms and Conditions modal
+ */
+function showTermsModal(e) {
+  e.preventDefault();
+  elements.termsModal.classList.remove('hidden');
+}
+
+/**
+ * Hides the Terms and Conditions modal
+ */
+function hideTermsModal() {
+  elements.termsModal.classList.add('hidden');
+}
+
+/**
+ * Hides the success message modal
+ */
+function hideSuccessMessage() {
+  elements.successMessage.classList.add('hidden');
+}
+
+/**
+ * Handles registration form submission
+ */
+function handleRegistrationSubmit(e) {
+  e.preventDefault();
+  
+  // Clear previous errors
+  clearErrors();
+  
+  // Validate form
+  if (validateRegistrationForm()) {
+    elements.successMessage.classList.remove('hidden');
+    elements.registrationForm.reset();
+    // Reset city selection as well
+    elements.citySelect.innerHTML = '<option value="">Select a country first</option>';
+    elements.aqiValue.textContent = "--";
+    elements.aqiStatus.textContent = "Select a city to view AQI";
+  }
+}
+
+/**
+ * Handles login form submission
+ */
+function handleLoginSubmit(e) {
+  e.preventDefault();
+  alert('Login functionality would be implemented here with proper authentication');
+}
+
+/**
+ * Sets up real-time form validation
+ */
+function setupFormValidation() {
+  // Add blur event listeners for real-time validation
+  if (elements.fname) elements.fname.addEventListener('blur', validateName);
+  if (elements.mail) elements.mail.addEventListener('blur', validateEmail);
+  if (elements.pass) elements.pass.addEventListener('blur', validatePassword);
+  if (elements.repass) elements.repass.addEventListener('blur', validateConfirmPassword);
+  if (elements.dob) elements.dob.addEventListener('blur', validateDOB);
+}
+
+/**
+ * Validates the entire registration form
+ * @returns {boolean} True if form is valid, false otherwise
+ */
+function validateRegistrationForm() {
+  let isValid = true;
+  
+  // Validate each field
+  if (!validateName()) isValid = false;
+  if (!validateEmail()) isValid = false;
+  if (!validatePassword()) isValid = false;
+  if (!validateConfirmPassword()) isValid = false;
+  if (!validateDOB()) isValid = false;
+  if (!validateGender()) isValid = false;
+  if (!validateCountry()) isValid = false;
+  if (!validateTerms()) isValid = false;
+  
+  return isValid;
+}
+
+// Field validation functions
+function validateName() {
+  const name = elements.fname.value.trim();
+  const errorElement = document.getElementById('fnameError');
+  
+  if (!name) {
+    showError(errorElement, 'Full name is required');
+    return false;
+  }
+  
+  if (name.length < 3) {
+    showError(errorElement, 'Name must be at least 3 characters');
+    return false;
+  }
+  
+  if (!/^[a-zA-Z\s]+$/.test(name)) {
+    showError(errorElement, 'Name can only contain letters and spaces');
+    return false;
+  }
+  
+  clearError(errorElement);
+  return true;
+}
+
+function validateEmail() {
+  const email = elements.mail.value.trim();
+  const errorElement = document.getElementById('mailError');
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  
+  if (!email) {
+    showError(errorElement, 'Email is required');
+    return false;
+  }
+  
+  if (!emailRegex.test(email)) {
+    showError(errorElement, 'Please enter a valid email address');
+    return false;
+  }
+  
+  clearError(errorElement);
+  return true;
+}
+
+function validatePassword() {
+  const password = elements.pass.value;
+  const errorElement = document.getElementById('passError');
+  
+  if (!password) {
+    showError(errorElement, 'Password is required');
+    return false;
+  }
+  
+  if (password.length < 8) {
+    showError(errorElement, 'Password must be at least 8 characters');
+    return false;
+  }
+  
+  if (!/[A-Z]/.test(password)) {
+    showError(errorElement, 'Password must contain at least one uppercase letter');
+    return false;
+  }
+  
+  if (!/[0-9]/.test(password)) {
+    showError(errorElement, 'Password must contain at least one number');
+    return false;
+  }
+  
+  clearError(errorElement);
+  return true;
+}
+
+function validateConfirmPassword() {
+  const password = elements.pass.value;
+  const confirmPassword = elements.repass.value;
+  const errorElement = document.getElementById('repassError');
+  
+  if (!confirmPassword) {
+    showError(errorElement, 'Please confirm your password');
+    return false;
+  }
+  
+  if (password !== confirmPassword) {
+    showError(errorElement, 'Passwords do not match');
+    return false;
+  }
+  
+  clearError(errorElement);
+  return true;
+}
+
+function validateDOB() {
+  const dob = elements.dob.value;
+  const errorElement = document.getElementById('dobError');
+  
+  if (!dob) {
+    showError(errorElement, 'Date of birth is required');
+    return false;
+  }
+  
+  // Calculate age
+  const dobDate = new Date(dob);
+  const today = new Date();
+  let age = today.getFullYear() - dobDate.getFullYear();
+  const monthDiff = today.getMonth() - dobDate.getMonth();
+  
+  if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < dobDate.getDate())) {
+    age--;
+  }
+  
+  if (age < 13) {
+    showError(errorElement, 'You must be at least 13 years old');
+    return false;
+  }
+  
+  clearError(errorElement);
+  return true;
+}
+
+function validateGender() {
+  const genderSelected = document.querySelector('input[name="gender"]:checked');
+  const errorElement = document.getElementById('genderError');
+  
+  if (!genderSelected) {
+    showError(errorElement, 'Please select a gender');
+    return false;
+  }
+  
+  clearError(errorElement);
+  return true;
+}
+
+function validateCountry() {
+  const country = elements.countrySelect.value;
+  const errorElement = document.getElementById('countryError');
+  
+  if (!country) {
+    showError(errorElement, 'Please select a country');
+    return false;
+  }
+  
+  clearError(errorElement);
+  return true;
+}
+
+function validateTerms() {
+  const termsChecked = elements.termsCheckbox.checked;
+  const errorElement = document.getElementById('termsError');
+  
+  if (!termsChecked) {
+    showError(errorElement, 'You must agree to the terms and conditions');
+    return false;
+  }
+  
+  clearError(errorElement);
+  return true;
+}
+
+// Helper functions
+function showError(element, message) {
+  if (element) {
+    element.textContent = message;
+    element.style.display = 'block';
+  }
+}
+
+function clearError(element) {
+  if (element) {
+    element.textContent = '';
+    element.style.display = 'none';
+  }
+}
+
+function clearErrors() {
+  const errorElements = document.querySelectorAll('.error');
+  errorElements.forEach(element => {
+    clearError(element);
   });
+}
