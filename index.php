@@ -8,6 +8,7 @@
 <body>
     <h1> Php Info </h1>
     <form action="process.php" method="post">
-        <input type="submit" value="Show PHP Info">
+    <input type="text" name="uname" placeholder="Enter your name">
+    <input type="submit" value="Show PHP Info">
 </body>
 </html>
